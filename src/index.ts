@@ -75,7 +75,9 @@ export function strip(source: string): string {
 				return;
 			}
 
-			const updated = remainingSpecifiers.map((s) => src.slice(s.start, s.end)).join(', ');
+			const updated = remainingSpecifiers
+				.map((s: AST.BaseNode) => src.slice(s.start, s.end))
+				.join(', ');
 
 			// @ts-expect-error wrong
 			src.update(node.start, node.end, `import { ${updated} } from ${node.source.raw};`);
