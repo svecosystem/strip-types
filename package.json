@@ -14,13 +14,7 @@
 	"bugs": {
 		"url": "https://github.com/ieedan/sv-strip/issues"
 	},
-	"keywords": [
-		"svelte",
-		"strip",
-		"types",
-		"typescript",
-		"javascript"
-	],
+	"keywords": ["svelte", "strip", "types", "typescript", "javascript"],
 	"packageManager": "pnpm@10.4.1",
 	"type": "module",
 	"scripts": {
@@ -32,12 +26,7 @@
 		"changeset": "changeset",
 		"ci:release": "unbuild && changeset publish"
 	},
-	"files": [
-		"dist/**/*",
-		"src/**/*",
-		"package.json",
-		"pnpm-lock.json"
-	],
+	"files": ["dist/**/*", "src/**/*", "package.json", "pnpm-lock.json"],
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
