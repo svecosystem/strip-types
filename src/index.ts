@@ -56,12 +56,33 @@ export function strip(source: string): string {
 		];
 		if (tsNodes.includes(node.type)) {
 			src.update(node.start, node.end, '');
+			return;
 		}
 
 		// remove type only imports
-		// @ts-expect-error I promise you it does exist
-		if (node.type === 'ImportDeclaration' && node.importKind === 'type') {
-			src.update(node.start, node.end, '');
+		if (node.type === 'ImportDeclaration') {
+			// @ts-expect-error I promise you it does exist
+			if (node.importKind === 'type') {
+				src.update(node.start, node.end, '');
+				return;
+			}
+
+			// @ts-expect-error I promise you it does exist
+			const typeOnlySpecifiers = node.specifiers.filter((s) => s.importKind === 'type');
+
+			// @ts-expect-error I promise you it does exist
+			if (typeOnlySpecifiers.length === node.specifiers.length) {
+				src.update(node.start, node.end, '');
+				return;
+			}
+
+			for (let i = 0; i < typeOnlySpecifiers.length; i++) {
+				const specifier = typeOnlySpecifiers[i];
+
+				src.update(specifier.start, specifier.end, '');
+			}
+
+			return;
 		}
 
 		// remove any accessability modifiers from class property definitions
@@ -76,6 +97,7 @@ export function strip(source: string): string {
 		if (tsExpressions.includes(node.type)) {
 			// @ts-expect-error I promise you it does exist
 			src.update(node.start, node.end, src.slice(node.expression.start, node.expression.end));
+			return;
 		}
 
 		// syntax that is unsupported results in an error
