@@ -9,7 +9,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ieedan/sv-strip"
+		"url": "git+https://github.com/ieedan/sv-strip.git"
 	},
 	"bugs": {
 		"url": "https://github.com/ieedan/sv-strip/issues"
