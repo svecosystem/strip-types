@@ -43,13 +43,13 @@ for (const dir of dirs) {
 for (const c of cases) {
 	describe(c.name, () => {
 		it('Converts ts to js correctly', () => {
-			if (c.js) {
+			if (c.js === null) {
+				// if c.js not provided then we expect an error
+				expect(() => strip(c.ts)).toThrow();
+			} else {
 				const stripped = strip(c.ts);
 
 				expect(normalizeNewlines(stripped)).toBe(normalizeNewlines(c.js));
-			} else {
-				// if c.js not provided then we expect an error
-				expect(() => strip(c.ts)).toThrow();
 			}
 		});
 	});
