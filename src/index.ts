@@ -68,19 +68,17 @@ export function strip(source: string): string {
 			}
 
 			// @ts-expect-error I promise you it does exist
-			const typeOnlySpecifiers = node.specifiers.filter((s) => s.importKind === 'type');
+			const remainingSpecifiers = node.specifiers.filter((s) => s.importKind !== 'type');
 
-			// @ts-expect-error I promise you it does exist
-			if (typeOnlySpecifiers.length === node.specifiers.length) {
+			if (remainingSpecifiers.length === 0) {
 				src.update(node.start, node.end, '');
 				return;
 			}
 
-			for (let i = 0; i < typeOnlySpecifiers.length; i++) {
-				const specifier = typeOnlySpecifiers[i];
+			const updated = remainingSpecifiers.map((s) => src.slice(s.start, s.end)).join(', ');
 
-				src.update(specifier.start, specifier.end, '');
-			}
+			// @ts-expect-error wrong
+			src.update(node.start, node.end, `import { ${updated} } from ${node.source.raw};`);
 
 			return;
 		}

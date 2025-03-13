@@ -1,5 +1,5 @@
 <script>
     
-    import { One,  } from './2';
+    import { One, Three } from './2';
     
 </script>
