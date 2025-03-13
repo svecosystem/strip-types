@@ -37,7 +37,7 @@ export function strip(source: string): string {
 	const enter = (node: AST.BaseNode) => {
 		// remove lang="ts" if it exists in the script
 		if (node.type === 'Script') {
-			// @ts-expect-error I promise you it does exist
+			// @ts-expect-error wrong
 			const scriptDeclaration = src.toString().slice(node.start, node.content.start);
 
 			const langIndex = scriptDeclaration.search(/ lang=["|']ts["|']/g);
@@ -61,20 +61,26 @@ export function strip(source: string): string {
 
 		// remove type only imports
 		if (node.type === 'ImportDeclaration') {
-			// @ts-expect-error I promise you it does exist
+			// @ts-expect-error wrong
 			if (node.importKind === 'type') {
 				src.update(node.start, node.end, '');
 				return;
 			}
 
-			// @ts-expect-error I promise you it does exist
+			// @ts-expect-error wrong
 			const remainingSpecifiers = node.specifiers.filter((s) => s.importKind !== 'type');
 
+			// if there were no type only imports do nothing
+			// @ts-expect-error wrong
+			if (remainingSpecifiers.length === node.specifiers.length) return;
+
+			// if all the specifiers were type only remove the entire thing
 			if (remainingSpecifiers.length === 0) {
 				src.update(node.start, node.end, '');
 				return;
 			}
 
+			// combine the remaining specifiers into an import statement
 			const updated = remainingSpecifiers
 				.map((s: AST.BaseNode) => src.slice(s.start, s.end))
 				.join(', ');
@@ -86,16 +92,16 @@ export function strip(source: string): string {
 		}
 
 		// remove any accessability modifiers from class property definitions
-		// @ts-expect-error I promise you it does exist
+		// @ts-expect-error wrong
 		if (node.type === 'PropertyDefinition' && node.accessibility !== undefined) {
-			// @ts-expect-error I promise you it does exist
+			// @ts-expect-error wrong
 			src.update(node.start, node.start + node.accessibility.length + 1, '');
 		}
 
 		// expressions are stripped by replacing their node with their expression
 		const tsExpressions = ['TSAsExpression', 'TSNonNullExpression', 'TSTypeAssertion'];
 		if (tsExpressions.includes(node.type)) {
-			// @ts-expect-error I promise you it does exist
+			// @ts-expect-error wrong
 			src.update(node.start, node.end, src.slice(node.expression.start, node.expression.end));
 			return;
 		}
