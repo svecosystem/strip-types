@@ -1,5 +1,12 @@
 # sv-strip
 
+## 0.0.5
+
+### Patch Changes
+
+- b8c1348: fix: Only include `dist` in package.json
+- 90f3216: feat: Add `filename` option to pass along to `parse`.
+
 ## 0.0.4
 
 ### Patch Changes
