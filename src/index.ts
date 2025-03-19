@@ -40,7 +40,7 @@ export function strip(source: string, options?: Options): string {
 
 	const src = new MagicString(source);
 
-	const enter = (node: AST.BaseNode) => {
+	const enter = (node: AST.BaseNode, parent: AST.BaseNode) => {
 		// remove lang="ts" if it exists in the script
 		if (node.type === 'Script') {
 			// @ts-expect-error wrong
@@ -61,6 +61,11 @@ export function strip(source: string, options?: Options): string {
 			'TSInterfaceDeclaration',
 		];
 		if (tsNodes.includes(node.type)) {
+			if (parent.type === 'ExportNamedDeclaration') {
+				src.update(parent.start, parent.end, '');
+				return;
+			}
+
 			src.update(node.start, node.end, '');
 			return;
 		}
@@ -93,6 +98,37 @@ export function strip(source: string, options?: Options): string {
 
 			// @ts-expect-error wrong
 			src.update(node.start, node.end, `import { ${updated} } from ${node.source.raw};`);
+
+			return;
+		}
+
+		// remove type only exports
+		if (node.type === 'ExportNamedDeclaration') {
+			// @ts-expect-error wrong
+			if (node.exportKind === 'type') {
+				src.update(node.start, node.end, '');
+				return;
+			}
+
+			// @ts-expect-error wrong
+			const remainingSpecifiers = node.specifiers.filter((s) => s.exportKind !== 'type');
+
+			// if there were no type only imports do nothing
+			// @ts-expect-error wrong
+			if (remainingSpecifiers.length === node.specifiers.length) return;
+
+			// if all the specifiers were type only remove the entire thing
+			if (remainingSpecifiers.length === 0) {
+				src.update(node.start, node.end, '');
+				return;
+			}
+
+			// combine the remaining specifiers into an import statement
+			const updated = remainingSpecifiers
+				.map((s: AST.BaseNode) => src.slice(s.start, s.end))
+				.join(', ');
+
+			src.update(node.start, node.end, `export { ${updated} };`);
 
 			return;
 		}
