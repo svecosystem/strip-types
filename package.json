@@ -26,7 +26,7 @@
 		"changeset": "changeset",
 		"ci:release": "unbuild && changeset publish"
 	},
-	"files": ["dist/**/*", "src/**/*", "package.json", "pnpm-lock.json"],
+	"files": ["dist"],
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
