@@ -11,9 +11,7 @@ import { strip } from 'sv-strip';
 
 const ts = `<script lang="ts">
     let value = $state<string>('');
-</script>
-
-<input bind:value/>`
+</script>`
 
 const js = strip(ts);
 ```
