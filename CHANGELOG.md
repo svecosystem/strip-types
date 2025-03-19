@@ -1,5 +1,11 @@
 # sv-strip
 
+## 0.0.4
+
+### Patch Changes
+
+- 222e749: chore: bump deps
+
 ## 0.0.3
 
 ### Patch Changes
