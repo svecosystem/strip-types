@@ -2,9 +2,15 @@ import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
 import { type AST, parse } from 'svelte/compiler';
 
+export type Options = {
+	/** Used for debugging hints. */
+	filename?: string;
+};
+
 /** Strips the types from the provided Svelte source.
  *
  * @param source TypeScript source which will have it's types stripped
+ * @param options Options for strip
  * @returns
  *
  * ## Usage
@@ -29,8 +35,8 @@ import { type AST, parse } from 'svelte/compiler';
  * assert(stripped === expected);
  * ```
  */
-export function strip(source: string): string {
-	const ast = parse(source);
+export function strip(source: string, options?: Options): string {
+	const ast = parse(source, { filename: options?.filename });
 
 	const src = new MagicString(source);
 
