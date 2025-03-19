@@ -6,6 +6,18 @@ A type stripper for Svelte.
 pnpm install sv-strip
 ```
 
+```ts
+import { strip } from 'sv-strip';
+
+const ts = `<script lang="ts">
+    let value = $state<string>('');
+</script>
+
+<input bind:value/>`
+
+const js = strip(ts);
+```
+
 **In**
 
 ```svelte
