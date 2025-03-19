@@ -1,5 +1,11 @@
 # sv-strip
 
+## 0.0.7
+
+### Patch Changes
+
+- 18d592a: feat: Strip type only exports
+
 ## 0.0.6
 
 ### Patch Changes
