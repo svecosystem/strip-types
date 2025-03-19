@@ -1,5 +1,11 @@
 # sv-strip
 
+## 0.0.6
+
+### Patch Changes
+
+- 6ada391: no signifigant changes
+
 ## 0.0.5
 
 ### Patch Changes
