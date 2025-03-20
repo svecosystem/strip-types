@@ -5,6 +5,8 @@ import { type AST, parse } from 'svelte/compiler';
 export type Options = {
 	/** Used for debugging hints. */
 	filename?: string;
+	/** Should the output be formatted. (Turn this off if you are doing your own formatting) @default true */
+	format?: boolean;
 };
 
 /** Strips the types from the provided Svelte source.
@@ -35,8 +37,11 @@ export type Options = {
  * assert(stripped === expected);
  * ```
  */
-export function strip(source: string, options?: Options): string {
-	const ast = parse(source, { filename: options?.filename });
+export function strip(
+	source: string,
+	{ filename = undefined, format = true }: Options = {}
+): string {
+	const ast = parse(source, { filename });
 
 	const src = new MagicString(source);
 
@@ -61,8 +66,14 @@ export function strip(source: string, options?: Options): string {
 			'TSInterfaceDeclaration',
 		];
 		if (tsNodes.includes(node.type)) {
-			if (parent.type === 'ExportNamedDeclaration') {
-				src.update(parent.start, parent.end, '');
+			if (['TSTypeAliasDeclaration', 'TSInterfaceDeclaration'].includes(node.type)) {
+				let start = node.start;
+
+				if (parent.type === 'ExportNamedDeclaration') {
+					start = parent.start;
+				}
+
+				removeNode(src, start, node.end, format);
 				return;
 			}
 
@@ -74,7 +85,7 @@ export function strip(source: string, options?: Options): string {
 		if (node.type === 'ImportDeclaration') {
 			// @ts-expect-error wrong
 			if (node.importKind === 'type') {
-				src.update(node.start, node.end, '');
+				removeNode(src, node.start, node.end, format);
 				return;
 			}
 
@@ -87,7 +98,7 @@ export function strip(source: string, options?: Options): string {
 
 			// if all the specifiers were type only remove the entire thing
 			if (remainingSpecifiers.length === 0) {
-				src.update(node.start, node.end, '');
+				removeNode(src, node.start, node.end, format);
 				return;
 			}
 
@@ -106,7 +117,7 @@ export function strip(source: string, options?: Options): string {
 		if (node.type === 'ExportNamedDeclaration') {
 			// @ts-expect-error wrong
 			if (node.exportKind === 'type') {
-				src.update(node.start, node.end, '');
+				removeNode(src, node.start, node.end, format);
 				return;
 			}
 
@@ -119,7 +130,7 @@ export function strip(source: string, options?: Options): string {
 
 			// if all the specifiers were type only remove the entire thing
 			if (remainingSpecifiers.length === 0) {
-				src.update(node.start, node.end, '');
+				removeNode(src, node.start, node.end, format);
 				return;
 			}
 
@@ -168,4 +179,40 @@ export function strip(source: string, options?: Options): string {
 	walk(ast.html, { enter });
 
 	return src.toString();
+}
+
+/** Removes the entire node and any leading / trailing whitespace
+ *
+ * @param src
+ * @param start
+ * @param end
+ */
+function removeNode(src: MagicString, start: number, end: number, format: boolean) {
+	let newStart = start;
+	let newEnd = end;
+
+	if (format) {
+		newStart = 0;
+
+		// remove whitespace proceeding the node until the next newline / none whitespace character
+		for (let i = start - 1; i > -1; i--) {
+			if (/\S|\n/.test(src.original[i])) {
+				newStart = i + 1;
+				break;
+			}
+		}
+
+		// remove whitespace beyond the node until the proceeding whitespace of the next node
+		for (let i = end; i < src.original.length; i++) {
+			if (/\S/.test(src.original[i])) {
+				break;
+			}
+
+			if (src.original[i] === '\n') {
+				newEnd = i + 1;
+			}
+		}
+	}
+
+	src.update(newStart, newEnd, '');
 }

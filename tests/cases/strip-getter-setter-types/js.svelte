@@ -1,6 +1,4 @@
 <script>
-    
-
     let value = $state(0);
 </script>
 
