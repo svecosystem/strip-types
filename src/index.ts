@@ -181,7 +181,7 @@ export function strip(
 	return src.toString();
 }
 
-/** Removes the entire node and any trailing whitespace
+/** Removes the entire node and any leading / trailing whitespace
  *
  * @param src
  * @param start
