@@ -49,12 +49,25 @@ export function strip(
 		// remove lang="ts" if it exists in the script
 		if (node.type === 'Script') {
 			// @ts-expect-error wrong
-			const scriptDeclaration = src.toString().slice(node.start, node.content.start);
+			const scriptDeclaration = src.original.slice(node.start, node.content.start);
 
 			const langIndex = scriptDeclaration.search(/ lang=["|']ts["|']/g);
 
 			if (langIndex !== -1) {
 				src.update(node.start + langIndex, node.start + langIndex + 10, '');
+			}
+
+			const genericsRegex = new RegExp(/ generics=["'][\s\S]+["']/g);
+
+			// @ts-expect-error wrong
+			const match = genericsRegex.exec(src.original.slice(node.start, node.content.start));
+
+			if (match !== null) {
+				src.update(
+					node.start + match.index,
+					node.start + match.index + match[0].length,
+					''
+				);
 			}
 		}
 
