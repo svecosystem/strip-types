@@ -20,7 +20,9 @@ const js = strip(ts);
 
 ```svelte
 <script lang="ts">
-    let value = $state<string>('');
+    type Foo = number
+
+    let value = $state<Foo>('');
 </script>
 
 <input bind:value/>
