@@ -1,5 +1,15 @@
 # sv-strip
 
+## 0.1.0
+
+### Minor Changes
+
+- f8619ed: feat: Remove leading and trailing whitespace from removed nodes.
+
+### Patch Changes
+
+- b05c1e7: fix: Remove generics from script tags
+
 ## 0.0.7
 
 ### Patch Changes
