@@ -47,7 +47,7 @@ for (const c of cases) {
 				// if c.js not provided then we expect an error
 				expect(() => strip(c.ts)).toThrow();
 			} else {
-				const stripped = strip(c.ts);
+				const stripped = strip(c.ts, { format: false });
 
 				expect(normalizeNewlines(stripped)).toBe(normalizeNewlines(c.js));
 			}

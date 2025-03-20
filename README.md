@@ -36,10 +36,16 @@ const js = strip(ts);
 <input bind:value/>
 ```
 
-## Limitations
+## Formatting
 
-### Formatting
-`sv-strip` doesn't format the code so we recommend running the output through a formatter to prevent unnecessary (and ugly) whitespace in your code.
+By default `sv-strip` will remove leading and trailing whitespace when removing nodes. This will result in an output that is correctly formatted (with a small performance penalty).
+
+If you are doing your own formatting you can disable this behavior with the `format` option like so:
+```ts
+const js = strip(ts, { format: false });
+```
+
+## Limitations
 
 ### Unsupported Syntax
 
