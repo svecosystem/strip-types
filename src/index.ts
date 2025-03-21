@@ -2,11 +2,16 @@ import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
 import { type AST, parse } from 'svelte/compiler';
 
+/** A regular expression that matches empty script tags */
+export const EMPTY_SCRIPT_REGEX = new RegExp(/<script\b[^>]*>\s*<\/script>/gi);
+
 export type Options = {
 	/** Used for debugging hints. */
 	filename?: string;
 	/** Should the output be formatted. (Turn this off if you are doing your own formatting) @default true */
 	format?: boolean;
+	/** Should empty script tags be removed. @default true */
+	removeEmptyScripts?: boolean;
 };
 
 /** Strips the types from the provided Svelte source.
@@ -39,7 +44,7 @@ export type Options = {
  */
 export function strip(
 	source: string,
-	{ filename = undefined, format = true }: Options = {}
+	{ filename = undefined, format = true, removeEmptyScripts = true }: Options = {}
 ): string {
 	const ast = parse(source, { filename });
 
@@ -191,7 +196,17 @@ export function strip(
 	// @ts-expect-error It's fine dude
 	walk(ast.html, { enter });
 
-	return src.toString();
+	let content = src.toString();
+
+	if (removeEmptyScripts) {
+		content = content.replaceAll(EMPTY_SCRIPT_REGEX, '');
+	}
+
+	if (format) {
+		return content.trim();
+	}
+
+	return content;
 }
 
 /** Removes the entire node and any leading / trailing whitespace
