@@ -1,5 +1,11 @@
 # sv-strip
 
+## 0.2.0
+
+### Minor Changes
+
+- 190891d: feat: Remove empty script tags.
+
 ## 0.1.0
 
 ### Minor Changes
