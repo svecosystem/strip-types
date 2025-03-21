@@ -205,24 +205,41 @@ function removeNode(src: MagicString, start: number, end: number, format: boolea
 	let newEnd = end;
 
 	if (format) {
-		newStart = 0;
-
-		// remove whitespace proceeding the node until the next newline / none whitespace character
-		for (let i = start - 1; i > -1; i--) {
-			if (/\S|\n/.test(src.original[i])) {
-				newStart = i + 1;
-				break;
-			}
-		}
+		let isLast = false;
 
 		// remove whitespace beyond the node until the proceeding whitespace of the next node
 		for (let i = end; i < src.original.length; i++) {
 			if (/\S/.test(src.original[i])) {
+				if (src.original[i] === '<' && src.original.slice(i).startsWith('</script')) {
+					isLast = true;
+					// back up 1 character so that the last node isn't on the same line as the script
+					newEnd -= 1;
+				}
 				break;
 			}
 
 			if (src.original[i] === '\n') {
 				newEnd = i + 1;
+			}
+		}
+
+		newStart = 0;
+
+		// remove whitespace proceeding the node until the next newline / none whitespace character
+		for (let i = start - 1; i > -1; i--) {
+			let regex: RegExp;
+
+			// if we are last then we get rid of all whitespace trailing the previous node
+			if (isLast) {
+				regex = new RegExp(/\S/);
+			} else {
+				// else we only remove to the new line
+				regex = new RegExp(/\S|\n/);
+			}
+
+			if (regex.test(src.original[i])) {
+				newStart = i + 1;
+				break;
 			}
 		}
 	}
