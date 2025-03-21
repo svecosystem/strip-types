@@ -1,5 +1,11 @@
 # sv-strip
 
+## 0.2.1
+
+### Patch Changes
+
+- ebdad23: fix: Improve formatting rules during removal to prevent unneccessary new lines at the end of script tags.
+
 ## 0.2.0
 
 ### Minor Changes

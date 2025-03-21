@@ -1,7 +1,7 @@
 {
 	"name": "sv-strip",
 	"description": "A type stripper for Svelte.",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"license": "MIT",
 	"author": {
 		"name": "Aidan Bleser",
@@ -14,7 +14,13 @@
 	"bugs": {
 		"url": "https://github.com/ieedan/sv-strip/issues"
 	},
-	"keywords": ["svelte", "strip", "types", "typescript", "javascript"],
+	"keywords": [
+		"svelte",
+		"strip",
+		"types",
+		"typescript",
+		"javascript"
+	],
 	"packageManager": "pnpm@10.4.1",
 	"type": "module",
 	"scripts": {
@@ -26,7 +32,9 @@
 		"changeset": "changeset",
 		"ci:release": "unbuild && changeset publish"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
