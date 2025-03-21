@@ -47,7 +47,20 @@ If you are doing your own formatting you can disable this behavior with the `for
 const js = strip(ts, { format: false });
 ```
 
+### Empty Script Tags
+
+Empty script tags can be created as a side effect of removing types or because there was an empty script tag just to enable TypeScript for the template.
+
+In any case they serve no use in the output code and will be removed by default. You can disable this behavior with the `removeEmptyScripts` option like so:
+```ts
+const js = strip(ts, { removeEmptyScripts: false });
+```
+
 ## Limitations
+
+### Formatting
+
+While `sv-strip` includes a `format` option it is not a formatter. It will do it's best to maintain the formatting of the original code when stripping types but it is still recommended to use your own formatter if possible.
 
 ### Unsupported Syntax
 
