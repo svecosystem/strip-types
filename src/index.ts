@@ -23,7 +23,7 @@ export type Options = {
  * ## Usage
  * ```ts
  * import assert from 'node:assert';
- * import { strip } from 'sv-strip';
+ * import { strip } from '@svecosystem/strip-types';
  *
  * const source = `<script lang="ts">
  *      let value = $state<string>('');
