@@ -1,5 +1,5 @@
 {
-	"name": "sv-strip",
+	"name": "@svecosystem/strip-types",
 	"description": "A type stripper for Svelte.",
 	"version": "0.2.1",
 	"license": "MIT",
@@ -9,10 +9,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ieedan/sv-strip.git"
+		"url": "git+https://github.com/svecosystem/strip-types.git"
 	},
 	"bugs": {
-		"url": "https://github.com/ieedan/sv-strip/issues"
+		"url": "https://github.com/svecosystem/strip-types/issues"
 	},
 	"keywords": [
 		"svelte",

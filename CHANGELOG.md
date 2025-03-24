@@ -1,4 +1,4 @@
-# sv-strip
+# @svecosystem/strip-types
 
 ## 0.2.1
 
