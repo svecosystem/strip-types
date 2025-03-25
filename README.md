@@ -1,13 +1,13 @@
-# sv-strip
+# @svecosystem/strip-types
 
 A type stripper for Svelte.
 
 ```sh
-pnpm install sv-strip
+pnpm install @svecosystem/strip-types
 ```
 
 ```ts
-import { strip } from 'sv-strip';
+import { strip } from '@svecosystem/strip-types';
 
 const ts = `<script lang="ts">
     let value = $state<string>('');
@@ -40,7 +40,7 @@ const js = strip(ts);
 
 ## Formatting
 
-By default `sv-strip` will remove leading and trailing whitespace when removing nodes. This will result in an output that is correctly formatted (with a small performance penalty).
+By default `@svecosystem/strip-types` will remove leading and trailing whitespace when removing nodes. This will result in an output that is correctly formatted (with a small performance penalty).
 
 If you are doing your own formatting you can disable this behavior with the `format` option like so:
 ```ts
@@ -60,7 +60,7 @@ const js = strip(ts, { removeEmptyScripts: false });
 
 ### Formatting
 
-While `sv-strip` includes a `format` option it is not a formatter. It will do it's best to maintain the formatting of the original code when stripping types but it is still recommended to use your own formatter if possible.
+While `@svecosystem/strip-types` includes a `format` option it is not a formatter. It will do it's best to maintain the formatting of the original code when stripping types but it is still recommended to use your own formatter if possible.
 
 ### Unsupported Syntax
 
