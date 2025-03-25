@@ -1,5 +1,10 @@
 # @svecosystem/strip-types
 
+[![npm version](https://flat.badgen.net/npm/v/@svecosystem/strip-types?color=pink)](https://npmjs.com/package/@svecosystem/strip-types)
+[![npm downloads](https://flat.badgen.net/npm/dm/@svecosystem/strip-types?color=pink)](https://npmjs.com/package/@svecosystem/strip-types)
+[![license](https://flat.badgen.net/github/license/svecosystem/strip-types?color=pink)](https://github.com/svecosystem/strip-types/blob/main/LICENSE)
+[![](https://dcbadge.vercel.app/api/server/fdXy3Sk8Gq?style=flat)](https://discord.gg/fdXy3Sk8Gq)
+
 A type stripper for Svelte.
 
 ```sh
@@ -64,7 +69,7 @@ While `@svecosystem/strip-types` includes a `format` option it is not a formatte
 
 ### Unsupported Syntax
 
-- ❌ Enums 
+- ❌ Enums
 ```ts
 enum Foo {
     Bar
@@ -78,7 +83,7 @@ class Foo {
 
     }
 }
-```  
+```
 
 ## Contributing
 
@@ -124,3 +129,23 @@ tests
     │   └── ts.svelte
     └── ...
 ```
+
+## License
+
+Published under the [MIT](https://github.com/svecosystem/strip-types/blob/main/LICENSE) license.
+Built by [Aidan Bleser](https://github.com/ieedan) and [community](https://github.com/svecosystem/strip-types/graphs/contributors).
+<br><br>
+<a href="https://github.com/svecosystem/strip-types/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=svecosystem/strip-types" />
+</a>
+
+## Community
+
+Join the Discord server to ask questions, find collaborators, or just say hi!
+
+<a href="https://discord.gg/fdXy3Sk8Gq" alt="Svecosystem Discord community">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://invidget.switchblade.xyz/fdXy3Sk8Gq">
+  <img alt="Svecosystem Discord community" src="https://invidget.switchblade.xyz/fdXy3Sk8Gq?theme=light">
+</picture>
+</a>
