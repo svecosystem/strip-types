@@ -10,7 +10,7 @@
 		"attributePosition": "auto"
 	},
 	"files": {
-		"ignore": ["dist", "node_modules", "tests/cases", "package.json"]
+		"ignore": ["dist", "node_modules", "tests/cases"]
 	},
 	"organizeImports": { "enabled": true },
 	"linter": {
