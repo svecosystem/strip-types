@@ -23,7 +23,7 @@
 		"format": "biome format --write",
 		"check": "biome check",
 		"test": "vitest",
-		"changeset": "changeset",
+		"changeset-version": "changeset version && pnpm format",
 		"ci:release": "unbuild && changeset publish"
 	},
 	"files": ["dist"],
