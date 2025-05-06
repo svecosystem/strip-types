@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import path from 'pathe';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { strip } from '../src';
 import { normalizeNewlines } from './utils';
