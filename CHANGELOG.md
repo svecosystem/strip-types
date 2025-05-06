@@ -1,5 +1,14 @@
 # @svecosystem/strip-types
 
+## 0.0.3
+### Patch Changes
+
+
+- chore: bump deps ([#33](https://github.com/svecosystem/strip-types/pull/33))
+
+
+- chore: remove unnecessary `pathe` dependency ([#33](https://github.com/svecosystem/strip-types/pull/33))
+
 ## 0.0.2
 ### Patch Changes
 
