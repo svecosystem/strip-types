@@ -76,6 +76,13 @@ export function strip(
 			}
 		}
 
+		// remove '?' from optional parameters
+		if (node.type === 'Identifier' && 'optional' in node && node.optional) {
+			// @ts-expect-error wrong
+			const questionMarkIndex = node.start + node.name.length;
+			src.update(questionMarkIndex, questionMarkIndex + 1, '');
+		}
+
 		// expressions that can just be removed outright
 		const tsNodes = [
 			'TSTypeParameterInstantiation',
