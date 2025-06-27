@@ -1,5 +1,11 @@
 # @svecosystem/strip-types
 
+## 0.0.4
+### Patch Changes
+
+
+- fix: strip `?` from optional parameters ([#35](https://github.com/svecosystem/strip-types/pull/35))
+
 ## 0.0.3
 ### Patch Changes
 
