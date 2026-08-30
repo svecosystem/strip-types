@@ -176,14 +176,6 @@ export function strip(
 			src.update(node.start, node.start + node.accessibility.length + 1, '');
 		}
 
-		// expressions are stripped by replacing their node with their expression
-		const tsExpressions = ['TSAsExpression', 'TSNonNullExpression', 'TSTypeAssertion'];
-		if (tsExpressions.includes(node.type)) {
-			// @ts-expect-error wrong
-			src.update(node.start, node.end, src.slice(node.expression.start, node.expression.end));
-			return;
-		}
-
 		// syntax that is unsupported results in an error
 		const unsupportedSyntax = ['TSEnumDeclaration', 'TSParameterProperty'];
 		if (unsupportedSyntax.includes(node.type)) {
@@ -191,17 +183,33 @@ export function strip(
 		}
 	};
 
+	// expressions are stripped by replacing their node with their expression.
+	// handled on leave (bottom-up) so edits to nested type nodes (e.g. the type
+	// arguments in `foo as Record<string, unknown>`) are applied first
+	const tsExpressions = [
+		'TSAsExpression',
+		'TSNonNullExpression',
+		'TSTypeAssertion',
+		'TSSatisfiesExpression',
+	];
+	const leave = (node: AST.BaseNode) => {
+		if (tsExpressions.includes(node.type)) {
+			// @ts-expect-error wrong
+			src.update(node.start, node.end, src.slice(node.expression.start, node.expression.end));
+		}
+	};
+
 	// strip script tag
 	// @ts-expect-error It's fine dude
-	walk(ast.instance, { enter });
+	walk(ast.instance, { enter, leave });
 
 	// strip <script module> tag
 	// @ts-expect-error It's fine dude
-	walk(ast.module, { enter });
+	walk(ast.module, { enter, leave });
 
 	// strip templates
 	// @ts-expect-error It's fine dude
-	walk(ast.html, { enter });
+	walk(ast.html, { enter, leave });
 
 	let content = src.toString();
 
