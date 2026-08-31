@@ -28,10 +28,13 @@ jobs:
                   node-version: 24
                   cache: 'pnpm'
 
-            # trusted publishing requires npm >= 11.5.1; `pnpm publish` shells out to
-            # whatever npm is on PATH, so the global npm is what matters here
+            # trusted publishing requires npm >= 11.5.1, and `pnpm publish`/`pnpm info`
+            # shell out to whatever npm is on PATH, so the global npm is what matters here.
+            # pinned to 11 on purpose: npm 12 changed `npm info --json` to emit an array,
+            # which changesets' pnpm adapter doesn't unwrap yet.
+            # https://github.com/changesets/changesets/issues/2274
             - name: Update npm
-              run: npm install -g npm@latest
+              run: npm install -g npm@11
 
             - name: Install dependencies
               run: pnpm install
