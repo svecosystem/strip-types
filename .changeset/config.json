@@ -1,5 +1,5 @@
 {
-	"$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+	"$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
 	"changelog": [
 		"@svitejs/changesets-changelog-github-compact",
 		{ "repo": "svecosystem/strip-types" }
@@ -11,5 +11,5 @@
 	"baseBranch": "main",
 	"updateInternalDependencies": "patch",
 	"ignore": [],
-	"prettier": false
+	"format": false
 }
