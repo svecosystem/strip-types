@@ -39,15 +39,18 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
+            # v2 is the first release that understands the Changesets v3 CLI: it detects
+            # published packages through the CHANGESETS_OUTPUT report file instead of
+            # scraping "New tag:" lines out of stdout (v3 no longer prints them), which is
+            # what pushes the git tag and creates the GitHub release.
             - name: Create Release Pull Request or Publish
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v2
               with:
-                  commit: 'chore(release): version package'
-                  title: 'chore(release): version package'
-                  version: 'pnpm changeset-version'
-                  publish: pnpm ci:release
+                  commit-message: 'chore(release): version package'
+                  pr-title: 'chore(release): version package'
+                  version-script: 'pnpm changeset-version'
+                  publish-script: 'pnpm ci:release'
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_CONFIG_PROVENANCE: true
                   NODE_ENV: production
