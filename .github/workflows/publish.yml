@@ -5,52 +5,40 @@ on:
         branches:
             - main
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
-
+permissions: {}
 jobs:
     release:
+        # prevents this action from running on forks
+        if: github.repository == 'svecosystem/strip-types'
+        permissions:
+            contents: write # to create release (changesets/action)
+            id-token: write # OpenID Connect token needed for provenance
+            pull-requests: write # to create pull request (changesets/action)
         name: Build & Publish Release
         runs-on: ubuntu-latest
-
-        permissions:
-            contents: write # to create the release (changesets/action)
-            pull-requests: write # to create the version PR (changesets/action)
-            id-token: write # to mint the OIDC token for npm trusted publishing
-
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout Repo
+              uses: actions/checkout@v7
               with:
                   # fetch all history so changesets can generate changelogs with the correct commits
                   fetch-depth: 0
-            - uses: pnpm/action-setup@v4
-            - uses: actions/setup-node@v4
+            - uses: pnpm/action-setup@v6
+            - uses: actions/setup-node@v6
               with:
                   node-version: 24
-                  cache: 'pnpm'
+                  cache: pnpm
 
-            # trusted publishing requires npm >= 11.5.1, and `pnpm publish`/`pnpm info`
-            # shell out to whatever npm is on PATH, so the global npm is what matters here.
-            # pinned to 11 on purpose: npm 12 changed `npm info --json` to emit an array,
-            # which changesets' pnpm adapter doesn't unwrap yet.
-            # https://github.com/changesets/changesets/issues/2274
-            - name: Update npm
-              run: npm install -g npm@11
+            - name: Install
+              run: pnpm install --frozen-lockfile
 
-            - name: Install dependencies
-              run: pnpm install
-
-            # v2 is the first release that understands the Changesets v3 CLI: it detects
-            # published packages through the CHANGESETS_OUTPUT report file instead of
-            # scraping "New tag:" lines out of stdout (v3 no longer prints them), which is
-            # what pushes the git tag and creates the GitHub release.
             - name: Create Release Pull Request or Publish
               id: changesets
               uses: changesets/action@v2
               with:
-                  commit-message: 'chore(release): version package'
-                  pr-title: 'chore(release): version package'
-                  version-script: 'pnpm changeset-version'
-                  publish-script: 'pnpm ci:release'
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: "chore(release): version package"
+                  pr-title: "chore(release): version package"
+                  publish-script: "pnpm ci:release"
+                  version-script: "pnpm changeset-version"
               env:
                   NPM_CONFIG_PROVENANCE: true
-                  NODE_ENV: production
