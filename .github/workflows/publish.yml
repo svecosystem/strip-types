@@ -12,12 +12,26 @@ jobs:
         name: Build & Publish Release
         runs-on: ubuntu-latest
 
+        permissions:
+            contents: write # to create the release (changesets/action)
+            pull-requests: write # to create the version PR (changesets/action)
+            id-token: write # to mint the OIDC token for npm trusted publishing
+
         steps:
             - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v4
-            - uses: actions/setup-node@v3
               with:
-                  node-version: '20'
+                  # fetch all history so changesets can generate changelogs with the correct commits
+                  fetch-depth: 0
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: 'pnpm'
+
+            # trusted publishing requires npm >= 11.5.1; `pnpm publish` shells out to
+            # whatever npm is on PATH, so the global npm is what matters here
+            - name: Update npm
+              run: npm install -g npm@latest
 
             - name: Install dependencies
               run: pnpm install
@@ -31,6 +45,6 @@ jobs:
                   version: 'pnpm changeset-version'
                   publish: pnpm ci:release
               env:
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_CONFIG_PROVENANCE: true
                   NODE_ENV: production
