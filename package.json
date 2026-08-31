@@ -14,7 +14,13 @@
 	"bugs": {
 		"url": "https://github.com/svecosystem/strip-types/issues"
 	},
-	"keywords": ["svelte", "strip", "types", "typescript", "javascript"],
+	"keywords": [
+		"svelte",
+		"strip",
+		"types",
+		"typescript",
+		"javascript"
+	],
 	"packageManager": "pnpm@10.34.5",
 	"type": "module",
 	"scripts": {
@@ -26,7 +32,9 @@
 		"changeset-version": "changeset version && pnpm format",
 		"ci:release": "unbuild && changeset publish"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
@@ -35,6 +43,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@changesets/changelog-github": "^1.0.0",
 		"@changesets/cli": "^3.0.1",
 		"@types/node": "^22.15.12",
 		"unbuild": "^3.5.0",
