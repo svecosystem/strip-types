@@ -1,5 +1,11 @@
 # @svecosystem/strip-types
 
+## 0.0.5
+### Patch Changes
+
+
+- fix: strip `as`/`<T>` casts to generic types and strip `satisfies` expressions ([#37](https://github.com/svecosystem/strip-types/pull/37))
+
 ## 0.0.4
 ### Patch Changes
 
